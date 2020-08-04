@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using AutoMapper;
 using CoreCodeCamp.Data;
@@ -30,9 +31,10 @@ namespace CoreCodeCamp
           opt.AssumeDefaultVersionWhenUnspecified = true;
           opt.DefaultApiVersion = new ApiVersion(1, 1);
           opt.ReportApiVersions = true;
-          opt.ApiVersionReader = ApiVersionReader.Combine(
-              new HeaderApiVersionReader("X-Version"),
-              new QueryStringApiVersionReader("ver"));
+          opt.ApiVersionReader = new UrlSegmentApiVersionReader();
+          //opt.ApiVersionReader = ApiVersionReader.Combine(
+          //    new HeaderApiVersionReader("X-Version"),
+          //    new QueryStringApiVersionReader("ver"));
       });
 
       services.AddMvc(opt => opt.EnableEndpointRouting = false)
